@@ -1,0 +1,17 @@
+
+from datetime import datetime
+from typing import TYPE_CHECKING
+
+from sqlmodel import Field, Relationship, SQLModel
+
+if TYPE_CHECKING:
+    from app.models.filme import Filme
+
+
+class Sessao(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    data_hora: datetime
+    preco: float
+    filme_id: int = Field(foreign_key="filme.id")
+
+    filme: "Filme" = Relationship(back_populates="sessoes")
