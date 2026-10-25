@@ -12,5 +12,6 @@ class Filme(SQLModel, table=True):
     sinopse: str
     duracao_minutos: int
     gênero: str
+    classificacao: str
     sessoes: list["Sessao"] = Relationship(back_populates="filme")
   
