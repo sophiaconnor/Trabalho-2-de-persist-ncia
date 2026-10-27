@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlmodel import Session
 
 from app.database import obter_sessao
-from app.services.sessao_service import listar_sessoes_por_filme
+from app.services.sessao_service import listar_sessoes_por_filme, listar_sessoes_por_sala
 
 router = APIRouter(prefix="/sessoes", tags=["Sessões"])
 
@@ -13,3 +13,10 @@ def consultar_sessoes_por_filme(
     session: Session = Depends(obter_sessao)
 ):
     return listar_sessoes_por_filme(session, titulo)
+
+@router.get("/sala/{numero}")
+def consultar_sessoes_por_sala(
+    numero: int,
+    session: Session = Depends(obter_sessao)
+):
+    return listar_sessoes_por_sala(session, numero)
