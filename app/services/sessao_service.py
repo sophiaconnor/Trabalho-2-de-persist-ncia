@@ -1,14 +1,14 @@
 from sqlmodel import Session, select
-from typing import TYPE_CHECKING
 
 from app.models.filme import Filme
 from app.models.sessao import Sessao
 
-def listar_sessoes_por_filme(session: Session, filme_id: int):
+
+def listar_sessoes_por_filme(session: Session, titulo: str):
     consulta = (
         select(Sessao)
         .join(Sessao.filme)
-        .where(Filme.id == filme_id)
+        .where(Filme.titulo == titulo)
         .order_by(Sessao.data_hora)
     )
 
