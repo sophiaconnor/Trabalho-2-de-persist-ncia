@@ -1,17 +1,16 @@
 
 from datetime import datetime
 from typing import TYPE_CHECKING
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import DateTime, Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from app.models.filme import Filme
     from app.models.sala import Sala
     from app.models.ingresso import Ingresso
 
-
 class Sessao(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    data_hora: datetime
+    data_hora: datetime = Field(sa_type=DateTime(timezone=False))
     preco: float
     filme_id: int = Field(foreign_key="filme.id")
     sala_id: int = Field(foreign_key="sala.id")

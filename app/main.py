@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from app.routers import filmes
+from app.routers import sessoes
 from fastapi import FastAPI
 
 from app.database import criar_tabelas
@@ -18,3 +18,4 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan
 )
+app.include_router(sessoes.router)
