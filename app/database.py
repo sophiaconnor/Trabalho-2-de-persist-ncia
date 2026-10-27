@@ -17,3 +17,7 @@ def criar_tabelas():
 def obter_sessao():
     with Session(engine) as session:
         yield session
+
+def obter_ingresso():
+    with Session(engine) as session:
+        yield session

@@ -14,7 +14,6 @@ class Ingresso(SQLModel, table=True):
     cliente_id: int = Field(foreign_key="cliente.id")
     sessao_id: int = Field(foreign_key="sessao.id")
     preco: float
-    status: str
     validacao: "Validacao" = Relationship(back_populates="ingresso")
 
     cliente: Cliente = Relationship(back_populates="ingressos")

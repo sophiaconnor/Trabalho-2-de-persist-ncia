@@ -1,6 +1,9 @@
 from datetime import datetime
 from app.database import engine, criar_tabelas
+from app.models.cliente import Cliente
+from app.models import cliente
 from app.models.filme import Filme
+from app.models.ingresso import Ingresso
 from app.models.sala import Sala
 from app.models.sessao import Sessao
 from app.services.sessao_service import listar_sessoes_por_filme
@@ -28,7 +31,6 @@ with Session(engine) as session:
         numero=1,
         capacidade=100,
         tipo="2D"
-        # Preencha com os atributos existentes no seu modelo Sala.
     )
 
     session.add(filme)
@@ -47,25 +49,24 @@ with Session(engine) as session:
 
     session.add(sessao)
     session.commit()
+    session.refresh(sessao)
+    
 
-    print(f"Filme cadastrado com ID: {filme.id}")
-    print(f"Sala cadastrada com ID: {sala.id}")
-    print(f"Sessão cadastrada com ID: {sessao.id}")
+    cliente = Cliente(
+        nome="Sophia Muniz",
+        email="sophia.muniz@06.com"
+    )
 
-with Session(engine) as session:
-    filmes = session.exec(select(Filme)).all()
-    sessoes = session.exec(select(Sessao)).all()
+    session.add(cliente)
+    session.commit()
+    session.refresh(cliente)
 
-    print("\n--- FILMES CADASTRADOS ---")
+    ingresso = Ingresso(
+    cliente_id=cliente.id,
+    sessao_id=sessao.id,
+    preco=25.00
+    )
 
-    for filme in filmes:
-        print(f"ID: {filme.id} | Título: {filme.titulo}")
-
-    print("\n--- SESSÕES CADASTRADAS ---")
-
-    for sessao in sessoes:
-        print(
-            f"ID: {sessao.id} | "
-            f"Filme ID: {sessao.filme_id} | "
-            f"Sala ID: {sessao.sala_id}"
-        )
+    session.add(ingresso)
+    session.commit()
+    session.refresh(ingresso)
