@@ -4,7 +4,6 @@ from fastapi import FastAPI
 
 from app.database import criar_tabelas
 
-#permite definir o que acontece durante o ciclo de vida da aplicação
 @asynccontextmanager
 
 async def lifespan(app: FastAPI):
