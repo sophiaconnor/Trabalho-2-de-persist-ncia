@@ -5,16 +5,17 @@ from app.models.sessao import Sessao
 
 if TYPE_CHECKING:
     from app.models.ingresso import Ingresso
+    from app.models.sala import Sala
     
 
 class Assento(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    numero: int
+    identificacao: str = Field
     disponivel: bool = True
-
-    ingresso: "Ingresso" | None = Relationship(
+    sala_id: int | None = Field(default=None, foreign_key="sala.id")
+    ingressos: list["Ingresso"] | None = Relationship(
         back_populates="assento"
     )
-    sessao: "Sessao" | None = Relationship(
+    sala: "Sala" | None = Relationship(
         back_populates="assentos"
     )
