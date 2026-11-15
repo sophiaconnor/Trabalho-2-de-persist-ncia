@@ -2,13 +2,17 @@ from fastapi import APIRouter, Depends
 from sqlmodel import Session
 
 from app.database import obter_ingresso
-from app.services.ingressos_service import listar_ingressos_por_cliente
+from app.services.ingressos_service import contar_ingressos_por_sessao
+from app.database import obter_sessao
 
 router = APIRouter(prefix="/ingressos", tags=["Ingressos"])
 
-@router.get("/cliente/{nome_cliente}")
-def consultar_ingressos_por_cliente(
-    nome_cliente: str,
-    session: Session = Depends(obter_ingresso)
+@router.get("/sessoes/{sessao_id}/quantidade")
+def quantidade_ingressos(
+    sessao_id: int,
+    cliente_nome: str | None = None,
+    session: Session = Depends(obter_sessao)
 ):
-    return listar_ingressos_por_cliente(session, nome_cliente)
+    return contar_ingressos_por_sessao(
+        session, sessao_id, cliente_nome
+    )

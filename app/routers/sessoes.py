@@ -10,13 +10,15 @@ router = APIRouter(prefix="/sessoes", tags=["Sessões"])
 @router.get("/filme/{titulo}")
 def consultar_sessoes_por_filme(
     titulo: str,
-    session: Session = Depends(obter_sessao)
+    session: Session = Depends(obter_sessao),
+    turno: str | None = None
 ):
-    return listar_sessoes_por_filme(session, titulo)
+    return listar_sessoes_por_filme(session, titulo, turno)
 
 @router.get("/sala/{numero}")
 def consultar_sessoes_por_sala(
     numero: int,
-    session: Session = Depends(obter_sessao)
+    session: Session = Depends(obter_sessao),
+    mês: int | None = None
 ):
-    return listar_sessoes_por_sala(session, numero)
+    return listar_sessoes_por_sala(session, numero, mês)

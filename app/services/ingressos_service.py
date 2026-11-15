@@ -2,27 +2,7 @@ from sqlmodel import Session, select
 from app.models.ingresso import Ingresso
 from app.models.cliente import Cliente
 from app.models.ingresso import Ingresso
-
-def listar_ingressos_por_cliente(session: Session, nome_cliente: str):
-    consulta = (
-        select(Ingresso)
-        .join(Ingresso.cliente)
-        .where(Cliente.nome == nome_cliente)
-    )
-
-    ingressos = session.exec(consulta).all()
-
-    resultado = []
-
-    for ingresso in ingressos:
-        resultado.append({
-            "ingresso_id": ingresso.id,
-            "sessao_id": ingresso.sessao_id,
-            "cliente_id": ingresso.cliente_id,
-            "preco": ingresso.preco
-        })
-
-    return resultado
+from sqlalchemy import func
 
 def cancelar_ingresso(session: Session, ingresso_id: int):
     ingresso = session.get(Ingresso, ingresso_id)
@@ -34,3 +14,19 @@ def cancelar_ingresso(session: Session, ingresso_id: int):
     session.commit()
 
     return True
+
+def contar_ingressos_por_sessao(
+    session: Session,
+    sessao_id: int,
+    cliente_nome: str | None = None
+):
+    consulta = select(func.count(Ingresso.id)).where(
+        Ingresso.sessao_id == sessao_id
+    )
+
+    if cliente_nome is not None:
+        consulta = consulta.where(
+            Ingresso.cliente.has(Cliente.nome == cliente_nome)
+        )
+
+    return session.exec(consulta).one()

@@ -1,12 +1,17 @@
-from sqlmodel import Session, select
-from datetime import timedelta
+from sqlmodel import DateTime, Field, Session, select
+from datetime import datetime, timedelta
 from app.models.filme import Filme
 from app.models.sessao import Sessao
 from app.models.sala import Sala
 from app.routers import sessoes
 
+turno: str
 
-def listar_sessoes_por_filme(session: Session, titulo: str):
+def listar_sessoes_por_filme(
+    session: Session, 
+    titulo: str,
+    turno: str | None = None
+):
     consulta = (
         select(Sessao)
         .join(Sessao.filme)
@@ -17,6 +22,19 @@ def listar_sessoes_por_filme(session: Session, titulo: str):
     sessoes = session.exec(consulta).all()
 
     resultado = []
+
+    if turno is not None:
+        if turno == "tarde":
+            sessoes = [
+                sessao for sessao in sessoes
+                if 14 <= sessao.data_hora.hour < 18
+            ]
+        elif turno == "noite":
+            sessoes = [
+                sessao for sessao in sessoes
+                if 18 <= sessao.data_hora.hour < 21
+            ]
+        
 
     for sessao in sessoes:
         resultado.append({
@@ -29,7 +47,11 @@ def listar_sessoes_por_filme(session: Session, titulo: str):
 
     return resultado
 
-def listar_sessoes_por_sala(session: Session, numero: int):
+def listar_sessoes_por_sala(
+    session: Session, 
+    numero: int,
+    mês: int | None = None
+):
     consulta = (
         select(Sessao)
         .join(Sessao.sala)
@@ -40,6 +62,12 @@ def listar_sessoes_por_sala(session: Session, numero: int):
     sessoes = session.exec(consulta).all()
 
     resultado = []
+
+    if mês is not None:
+        sessoes = [
+            sessao for sessao in sessoes
+            if sessao.data_hora.month == mês
+        ]
 
     for sessao in sessoes:
         resultado.append({
