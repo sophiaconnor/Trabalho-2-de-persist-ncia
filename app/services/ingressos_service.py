@@ -1,6 +1,7 @@
 from sqlmodel import Session, select
 from app.models.ingresso import Ingresso
 from app.models.cliente import Cliente
+from app.models.ingresso import Ingresso
 
 def listar_ingressos_por_cliente(session: Session, nome_cliente: str):
     consulta = (
@@ -22,3 +23,14 @@ def listar_ingressos_por_cliente(session: Session, nome_cliente: str):
         })
 
     return resultado
+
+def cancelar_ingresso(session: Session, ingresso_id: int):
+    ingresso = session.get(Ingresso, ingresso_id)
+
+    if not ingresso:
+        return False
+
+    session.delete(ingresso)
+    session.commit()
+
+    return True

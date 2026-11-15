@@ -11,11 +11,10 @@ if TYPE_CHECKING:
 class Assento(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     identificacao: str = Field
-    disponivel: bool = True
-    sala_id: int | None = Field(default=None, foreign_key="sala.id")
+    sala_id: int = Field(default=None, foreign_key="sala.id")
     ingressos: list["Ingresso"] | None = Relationship(
         back_populates="assento"
     )
-    sala: "Sala" | None = Relationship(
+    sala: "Sala" = Relationship(
         back_populates="assentos"
     )

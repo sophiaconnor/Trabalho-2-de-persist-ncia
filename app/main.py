@@ -1,9 +1,8 @@
 from contextlib import asynccontextmanager
 from app.routers import ingressos, sessoes
 from fastapi import FastAPI
-
 from app.database import criar_tabelas
-
+from pathlib import Path
 @asynccontextmanager
 
 async def lifespan(app: FastAPI):

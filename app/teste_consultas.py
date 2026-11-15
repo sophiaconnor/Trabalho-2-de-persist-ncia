@@ -1,13 +1,15 @@
 from datetime import datetime
 from app.database import engine, criar_tabelas
+from app.models import Ingresso
 from app.models.cliente import Cliente
-from app.models import cliente
 from app.models.filme import Filme
+from app.models.genero import Genero
 from app.models.ingresso import Ingresso
 from app.models.sala import Sala
 from app.models.sessao import Sessao
-from app.services.sessao_service import listar_sessoes_por_filme
 from sqlmodel import select, Session
+from app.models.assento import Assento
+from app.models.validacao import Validacao
 
 criar_tabelas()
 
@@ -23,9 +25,11 @@ with Session(engine) as session:
         " tudo ao navegar por um mundo cheio de bandidos," \
         " animais falantes e figuras poderosas.",
         duracao_minutos=130,
-        gênero="Fantasia",
         classificacao="14 anos"
     )
+    session.add(filme)
+    session.commit()
+    session.refresh(filme)
 
     sala = Sala(
         numero=1,
@@ -33,11 +37,8 @@ with Session(engine) as session:
         tipo="2D"
     )
 
-    session.add(filme)
     session.add(sala)
     session.commit()
-
-    session.refresh(filme)
     session.refresh(sala)
 
     sessao = Sessao(
@@ -50,7 +51,15 @@ with Session(engine) as session:
     session.add(sessao)
     session.commit()
     session.refresh(sessao)
-    
+
+    genero = Genero(
+        nome="Aventura",
+        filmes=[filme]
+    )
+
+    session.add(genero)
+    session.commit()
+    session.refresh(genero)
 
     cliente = Cliente(
         nome="Sophia Muniz",
@@ -61,12 +70,21 @@ with Session(engine) as session:
     session.commit()
     session.refresh(cliente)
 
+    assento = Assento(
+    identificacao="A1",
+    sala_id=sala.id
+    )
+
+    session.add(assento)
+    session.commit()
+    session.refresh(assento)
+
     ingresso = Ingresso(
     cliente_id=cliente.id,
     sessao_id=sessao.id,
-    preco=25.00
+    preco=25.00,
+    assento_id=assento.id
     )
 
     session.add(ingresso)
     session.commit()
-    session.refresh(ingresso)

@@ -1,6 +1,8 @@
 from typing import TYPE_CHECKING
 from sqlmodel import Field, Relationship, SQLModel
 
+from app.models.assento import Assento
+
 if TYPE_CHECKING:
     from app.models.sessao import Sessao
     from app.models.ingresso import Ingresso
@@ -13,3 +15,4 @@ class Sala(SQLModel, table=True):
     #garante que cada sala tenha uma lista de sessões associadas a ela
     sessoes: list["Sessao"] = Relationship(back_populates="sala")
     capacidade: int
+    assentos: list["Assento"] = Relationship(back_populates="sala")
