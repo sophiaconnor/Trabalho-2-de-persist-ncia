@@ -18,3 +18,5 @@ class Sessao(SQLModel, table=True):
     sala: "Sala" = Relationship(back_populates="sessoes")
     filme: "Filme" = Relationship(back_populates="sessoes")
     ingressos: list["Ingresso"] = Relationship(back_populates="sessao")
+
+

@@ -3,14 +3,16 @@ from datetime import datetime, timedelta
 from app.models.filme import Filme
 from app.models.sessao import Sessao
 from app.models.sala import Sala
-from app.routers import sessoes
+from app.routers import sessoes 
+from fastapi import Query
+from sqlalchemy import extract
 
 turno: str
 
 def listar_sessoes_por_filme(
     session: Session, 
     titulo: str,
-    turno: str | None = None
+    turno: str | None = None,
 ):
     consulta = (
         select(Sessao)
@@ -20,7 +22,6 @@ def listar_sessoes_por_filme(
     )
 
     sessoes = session.exec(consulta).all()
-
     resultado = []
 
     if turno is not None:
@@ -44,40 +45,42 @@ def listar_sessoes_por_filme(
             "preco": sessao.preco,
             "sala_id": sessao.sala_id
         })
-
     return resultado
 
 def listar_sessoes_por_sala(
     session: Session, 
     numero: int,
-    mês: int | None = None
+    mes: int,
+    page: int,
+    page_size: int
 ):
+    page_size = 10
     consulta = (
         select(Sessao)
         .join(Sessao.sala)
         .where(Sala.numero == numero)
-        .order_by(Sessao.data_hora)
+        .order_by(Sessao.id)
+        .offset((page - 1) * page_size)
+        .limit(page_size)
     )
+    
+    if mes is not None:
+        consulta = consulta.where (
+            extract("month", Sessao.data_hora) == mes
+        )
 
     sessoes = session.exec(consulta).all()
 
     resultado = []
 
-    if mês is not None:
-        sessoes = [
-            sessao for sessao in sessoes
-            if sessao.data_hora.month == mês
-        ]
-
     for sessao in sessoes:
         resultado.append({
             "filme": sessao.filme.titulo,
-            "sessao_id": sessao.id,
+            "id": sessao.id,
             "data_hora": sessao.data_hora,
             "preco": sessao.preco,
             "sala_id": sessao.sala_id
         })
-
     return resultado
 
 

@@ -18,7 +18,9 @@ def consultar_sessoes_por_filme(
 @router.get("/sala/{numero}")
 def consultar_sessoes_por_sala(
     numero: int,
+    page: int,
+    page_size: int = 10,
     session: Session = Depends(obter_sessao),
     mês: int | None = None
 ):
-    return listar_sessoes_por_sala(session, numero, mês)
+    return listar_sessoes_por_sala(session, numero, mês, page, page_size)

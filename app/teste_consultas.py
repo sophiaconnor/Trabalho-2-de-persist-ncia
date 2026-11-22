@@ -41,16 +41,126 @@ with Session(engine) as session:
     session.commit()
     session.refresh(sala)
 
-    sessao = Sessao(
+    sessao1 = Sessao(
         data_hora=datetime(2026, 10, 27, 18, 0),
         preco=25.00,
         filme_id=filme.id,
         sala_id=sala.id
     )
 
-    session.add(sessao)
+    session.add(sessao1)
     session.commit()
-    session.refresh(sessao)
+    session.refresh(sessao1)
+
+    sessao2 = Sessao(
+        data_hora=datetime(2026, 10, 28, 18, 0),
+        preco=25.00,
+        filme_id=filme.id,
+        sala_id=sala.id
+    )
+
+    session.add(sessao2)
+    session.commit()
+    session.refresh(sessao2)
+
+    sessao3 = Sessao(
+        data_hora=datetime(2026, 10, 29, 18, 0),
+        preco=25.00,
+        filme_id=filme.id,
+        sala_id=sala.id
+    )
+
+    session.add(sessao3)
+    session.commit()
+    session.refresh(sessao3)
+
+    sessao4 = Sessao(
+        data_hora=datetime(2026, 10, 30, 18, 0),
+        preco=25.00,
+        filme_id=filme.id,
+        sala_id=sala.id
+    )
+
+    session.add(sessao4)
+    session.commit()
+    session.refresh(sessao4)
+
+    sessao5 = Sessao(
+        data_hora=datetime(2026, 10, 31, 18, 0),
+        preco=25.00,
+        filme_id=filme.id,
+        sala_id=sala.id
+    )
+
+    session.add(sessao5)
+    session.commit()
+    session.refresh(sessao5)
+
+    sessao6 = Sessao(
+        data_hora=datetime(2026, 11, 1, 18, 0),
+        preco=25.00,
+        filme_id=filme.id,
+        sala_id=sala.id
+    )
+
+    session.add(sessao6)
+    session.commit()
+    session.refresh(sessao6)
+
+    sessao7 = Sessao(
+        data_hora=datetime(2026, 10, 27, 14, 20),
+        preco=25.00,
+        filme_id=filme.id,
+        sala_id=sala.id
+    )
+
+    session.add(sessao7)
+    session.commit()
+    session.refresh(sessao7)
+
+    sessao8 = Sessao(
+        data_hora=datetime(2026, 10, 28, 14, 20),
+        preco=25.00,
+        filme_id=filme.id,
+        sala_id=sala.id
+    )
+
+    session.add(sessao8)
+    session.commit()
+    session.refresh(sessao8)
+
+    sessao9 = Sessao(
+        data_hora=datetime(2026, 10, 29, 14, 20),
+        preco=25.00,
+        filme_id=filme.id,
+        sala_id=sala.id
+    )
+
+    session.add(sessao9)
+    session.commit()
+    session.refresh(sessao9)
+
+    sessao10 = Sessao(
+        data_hora=datetime(2026, 10, 30, 14, 20),
+        preco=25.00,
+        filme_id=filme.id,
+        sala_id=sala.id
+    )
+
+    session.add(sessao10)
+    session.commit()
+    session.refresh(sessao10)
+
+    sessao11 = Sessao(
+        data_hora=datetime(2026, 10, 31, 14, 20),
+        preco=25.00,
+        filme_id=filme.id,
+        sala_id=sala.id
+    )
+
+    session.add(sessao11)
+    session.commit()
+    session.refresh(sessao11)
 
     genero = Genero(
         nome="Aventura",
@@ -81,7 +191,7 @@ with Session(engine) as session:
 
     ingresso = Ingresso(
     cliente_id=cliente.id,
-    sessao_id=sessao.id,
+    sessao_id=sessao1.id,
     preco=25.00,
     assento_id=assento.id
     )

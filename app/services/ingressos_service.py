@@ -1,4 +1,5 @@
 from sqlmodel import Field, Session, select
+from app.models import sessao
 from app.models.filme import Filme
 from app.models.ingresso import Ingresso
 from app.models.cliente import Cliente
@@ -8,6 +9,7 @@ from datetime import datetime
 from datetime import date
 from fastapi import Query
 from app.models.sessao import Sessao
+from sqlalchemy import extract
 
 def cancelar_ingresso(session: Session, ingresso_id: int):
     ingresso = session.get(Ingresso, ingresso_id)
@@ -46,9 +48,9 @@ def contar_ingressos_por_periodo(
         select(func.count(Ingresso.id))
         .join(Ingresso.sessao)
         .where(
-            func.strftime("%m", Sessao.data_hora) >= f"{mes_inicio:02d}",
-            func.strftime("%m", Sessao.data_hora) <= f"{mes_fim:02d}",
-            func.strftime("%Y", Sessao.data_hora) == str(ano)
+            extract("month", Sessao.data_hora) >= mes_inicio,
+            extract("month", Sessao.data_hora) <= mes_fim,
+            extract("year", Sessao.data_hora) == ano
         )
     )
 

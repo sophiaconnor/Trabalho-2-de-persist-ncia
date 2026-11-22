@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 class Cliente(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    nome: str
+    nome: str = Field(min_length=3, max_length=120, index=True)
     email: str
     data_nascimento: date | None = None
 
