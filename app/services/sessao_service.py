@@ -4,7 +4,7 @@ from app.models.filme import Filme
 from app.models.sessao import Sessao
 from app.models.sala import Sala
 from app.routers import sessoes 
-from fastapi import Query
+from fastapi import HTTPException, Query
 from sqlalchemy import extract
 
 turno: str
@@ -23,6 +23,9 @@ def listar_sessoes_por_filme(
 
     sessoes = session.exec(consulta).all()
     resultado = []
+
+    if not sessoes:
+        raise HTTPException(status_code=404, detail="Nenhuma sessão encontrada para o filme especificado.")
 
     if turno is not None:
         if turno == "tarde":
@@ -72,6 +75,9 @@ def listar_sessoes_por_sala(
     sessoes = session.exec(consulta).all()
 
     resultado = []
+
+    if not sessoes:
+        raise HTTPException(status_code=404, detail="Nenhuma sessão encontrada para a sala especificada.")
 
     for sessao in sessoes:
         resultado.append({

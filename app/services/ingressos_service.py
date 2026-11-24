@@ -7,7 +7,7 @@ from app.models.ingresso import Ingresso
 from sqlalchemy import DateTime, func
 from datetime import datetime
 from datetime import date
-from fastapi import Query
+from fastapi import Query, HTTPException
 from app.models.sessao import Sessao
 from sqlalchemy import extract
 
