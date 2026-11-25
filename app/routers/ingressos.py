@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import DateTime, Field, Session
 from datetime import datetime
 from datetime import date
@@ -26,6 +26,11 @@ def quantidade_ingressos_por_periodo(
     ano: int = Query(..., ge=2000),
     session: Session = Depends(obter_sessao)
 ):
+    if mes_inicio not in range(1, 13) or mes_fim not in range(1, 13):
+        raise HTTPException(
+            status_code=422,
+            detail="Mês inválido. Escolha um mês entre 1 e 12."
+        )
     return contar_ingressos_por_periodo(
         session, mes_inicio, mes_fim, ano
     )
